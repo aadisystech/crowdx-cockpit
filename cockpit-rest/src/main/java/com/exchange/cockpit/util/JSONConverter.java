@@ -24,10 +24,10 @@ public class JSONConverter {
         return filter;
     }
 
-    public String buildJSONStringFromOrderList(List<Order> orders) {
+    public String buildJSONStringFromList(List<? extends Object> list) {
         String jsonResponse = null;
         try {
-            jsonResponse = objectMapper.writeValueAsString(orders);
+            jsonResponse = objectMapper.writeValueAsString(list);
         } catch(JsonProcessingException e) {
             e.printStackTrace();
         }

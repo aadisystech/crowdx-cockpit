@@ -1,6 +1,7 @@
 package com.exchange.cockpit.dao.impl;
 
 import com.exchange.cockpit.dao.OrderDAO;
+import com.exchange.cockpit.entity.Execution;
 import com.exchange.cockpit.entity.Order;
 import com.exchange.cockpit.pojo.OrderFilter;
 import org.hibernate.Session;
@@ -10,10 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +19,10 @@ import java.util.List;
 public class OrderDAOImpl implements OrderDAO {
 
     @Autowired
-    SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
     @Transactional
+    @Override
     public List<Order> getOrders(OrderFilter orderFilter) {
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();

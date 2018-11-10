@@ -1,17 +1,17 @@
 package com.exchange.cockpit.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders", schema = "quickfix")
-public class Order {
+public class Order implements Serializable {
 
     @Id
     @Column(name = "order_id", nullable = false)
@@ -64,9 +64,18 @@ public class Order {
     private Timestamp recCreateTime;
 
     @Column(name = "order_rec_update_time")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:SS")
     private Timestamp recUpdateTime;
 
+//    @OneToMany(mappedBy = "order")
+//    @JsonManagedReference
+//    private Set<Execution> executions;
+
     public Order() {
+
+    }
+
+    public Order(Order o, Execution e) {
 
     }
 
@@ -205,4 +214,13 @@ public class Order {
     public void setRecUpdateTime(Timestamp recUpdateTime) {
         this.recUpdateTime = recUpdateTime;
     }
+
+//    public Set<Execution> getExecutions() {
+//        return executions;
+//    }
+//
+//    public void setExecutions(Set<Execution> executions) {
+//        this.executions = executions;
+//    }
+
 }

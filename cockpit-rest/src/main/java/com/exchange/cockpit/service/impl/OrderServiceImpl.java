@@ -27,7 +27,7 @@ public class OrderServiceImpl implements OrderService {
         System.out.println("of " + of);
         List<Order> o = orderDAO.getOrders(of);
         System.out.println(o);
-        return jsonConverter.buildJSONStringFromOrderList(o);
+        return jsonConverter.buildJSONStringFromList(o);
     }
 
     public Long getOrdersTotalCount(String filter) {
