@@ -1,0 +1,160 @@
+<div class="row">
+  <div class="col-sm-11 col-lg-11">
+    <h3>Order Details for {{ordersService.selectedOrder.id}}:</h3>
+  </div>
+  <div class="col-sm-1 col-lg-1">
+    <button type="button" class="btn btn-primary" (click)="onBack()">Back</button>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-sm-2 border border-light tab-col">
+    Order ID
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.id}}
+  </div>
+  <div class="col-sm-2 border border-light tab-col">
+    Client ID
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.clientId}}
+  </div>
+  <div class="col-sm-2 border border-light tab-col">
+    Side
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.side}}
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-2 border border-light tab-col">
+    Type
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.type}}
+  </div>
+  <div class="col-sm-2 border border-light tab-col">
+    Time In Force
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.tif}}
+  </div>
+  <div class="col-sm-2 border border-light tab-col">
+    Status
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.status}}
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-2 border border-light tab-col">
+    Original Client Id
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.origClientId}}
+  </div>
+  <div class="col-sm-2 border border-light tab-col">
+    Symbol
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.symbol}}
+  </div>
+  <div class="col-sm-2 border border-light tab-col">
+    Security Id
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.securityId}}
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-2 border border-light tab-col">
+    ID Source
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.idSource}}
+  </div>
+  <div class="col-sm-2 border border-light tab-col">
+    Quantity
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.quantity}}
+  </div>
+  <div class="col-sm-2 border border-light tab-col">
+    Open Quantity
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.openQuantity}}
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-2 border border-light tab-col">
+    Executed Quantity
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.executedQuantity}}
+  </div>
+  <div class="col-sm-2 border border-light tab-col">
+    Limit Price
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.limitPrice}}
+  </div>
+  <div class="col-sm-2 border border-light tab-col">
+    Avg Price
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.avgPrice}}
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-2 border border-light tab-col">
+    Create Time
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.recCreateTime}}
+  </div>
+  <div class="col-sm-2 border border-light tab-col">
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+  </div>
+  <div class="col-sm-2 border border-light tab-col">
+    Update Time
+  </div>
+  <div class="col-sm-2 border border-light font-weight-bold">
+    {{ordersService.selectedOrder.lastUpdateTime}}
+  </div>
+</div>
+<br />
+<h3>Executions:</h3>
+<hr>
+<div class="tab-display">
+  <table class="table table-sm table-hover" *ngIf="ordersService.executions?.length > 0">
+    <thead style="background-color: #02253b; color: #fff; font-weight: normal;">
+      <tr>
+        <th>Execution ID</th>
+        <th>Type</th>
+        <th>Tran Type</th>
+        <th>Last Shares</th>
+        <th>Last Price</th>
+        <th>Leaves Quantity</th>
+        <th>Cum. Quantity</th>
+        <th>Avg. Price</th>
+        <th>Create Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let exe of ordersService.executions">
+        <td>{{exe.executionId}}</td>
+        <td>{{exe.execType}}</td>
+        <td>{{exe.execTranType}}</td>
+        <td>{{exe.lastShares}}</td>
+        <td>{{exe.lastPrice}}</td>
+        <td>{{exe.leavesQuantity}}</td>
+        <td>{{exe.cumQuantity}}</td>
+        <td>{{exe.avgPrice}}</td>
+        <td>{{exe.recCreateTime}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

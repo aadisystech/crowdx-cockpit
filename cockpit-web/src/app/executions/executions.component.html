@@ -1,3 +1,154 @@
-<h2>
-  Work In Progress...
-</h2>
+<!-- <div class="col-md-12">
+  <span class="anchor" id="formComplex"></span>
+  <h3>Execution Search </h3>
+
+   <form [formGroup]="searchForm">
+    <div class="form-row mt-3">
+      <div class="col-sm-2 pb-3">
+        <label for="orderid">Order ID</label>
+        <input type="text" class="form-control" id="orderid" formControlName="orderId">
+      </div>
+      <div class="col-sm-1 pb-3">
+        <label for="clientid">Client ID</label>
+        <input type="text" class="form-control" id="clientid" formControlName="clientId">
+      </div>
+      <div class="col-sm-1 pb-3">
+        <label for="side">Side</label>
+        <select class="form-control" id="side" formControlName="side">
+          <option></option>
+          <option>Buy</option>
+          <option>Sell</option>
+        </select>
+      </div>
+      <div class="col-sm-1 pb-3">
+        <label for="type">Type</label>
+        <select class="form-control" id="type" formControlName="type">
+          <option></option>
+          <option>Market</option>
+          <option>Limit</option>
+        </select>
+      </div>
+      <div class="col-sm-1 pb-3">
+        <label for="status">Status</label>
+        <select class="form-control" id="status" formControlName="status">
+          <option></option>
+          <option>New</option>
+          <option>Filled</option>
+          <option>Partially Filled</option>
+        </select>
+      </div>
+      <div class="col-sm-1 pb-3">
+        <label for="securityid">Security ID</label>
+        <input type="text" class="form-control" id="securityid" formControlName="securityId">
+      </div>
+      <div class="col-sm-4 pb-3">
+        <label for="entrydate">Entry Date </label>
+        <div class="form-group">
+          <div class="input-group">
+            <select class="form-control col-sm-2" id="dateOperator" [(ngModel)]="dateOperator" formControlName="dateOperator">
+              <option *ngFor="let c of dateOperators" [ngValue]="c"> {{c}} </option>
+            </select>
+            <input class="form-control col-sm-3" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker"
+              formControlName="entryDateFrom">
+            <div class="input-group-append">
+              <button class="btn btn-outline-primary" (click)="d.toggle()" type="button">
+                <span class="fa fa-calendar-o fa-sm" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="input-group-append" *ngIf="dateOperator === 'bt'">
+              <label>&nbsp;</label>
+              <input class="form-control col-sm-6" placeholder="yyyy-mm-dd" name="dp1" ngbDatepicker #d1="ngbDatepicker"
+                formControlName="entryDateTo">
+              <div class="input-group-append">
+                <button class="btn btn-outline-primary" (click)="d1.toggle()" type="button">
+                  <span class="fa fa-calendar-o fa-sm" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-1 pb-3">
+        <label for="entrytime">&nbsp;</label>
+        <button type="button" class="form-control btn btn-primary pull-right" (click)="getOrders()">Search</button>
+      </div>
+    </div>
+  </form>
+</div>
+<ng-container *ngIf="orders">
+  <form [formGroup]="tableControlForm">
+      <div class="form-row tab-display">
+          <div class="h-40 form-group col-sm-5">
+            <div class="input-group">
+              <label>&nbsp;show&nbsp;</label>
+              <select class="col-sm-2" id="pageSize" name="pageSize" [(ngModel)]="pageSize" 
+              ngDefaultControl [ngModelOptions]="{standalone: true}">
+                <option [ngValue] = "r" *ngFor="let r of records"> {{r}} </option></select>
+              <label>&nbsp;records per page&nbsp;</label>
+            </div>
+          </div>
+          <div class="h-40 form-group col-sm-2">
+            <div class="input-group">
+              <label>&nbsp;Total records : &nbsp; {{totalRecords}}</label>
+            </div>
+          </div>
+          <div class="h-40 form-group col-sm-5">
+            <ul class="pagination pagination-sm float-right" [(ngModel)]="pageCount" [ngModelOptions]="{standalone: true}"
+            ngDefaultControl name="pageCount">
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                <a class="page-link" (click)="setPage(1)">First</a> </li>
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                <a class="page-link" (click)="setPage(pager.currentPage - 1)">Prev</a> </li>
+              <li *ngFor="let page of pager.pages" class="page-item" 
+              [ngClass]="{active:pager.currentPage === page}">
+                <a class="page-link" (click)="setPage(page)">{{page}}</a> </li>
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                <a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a> </li>
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                <a class="page-link" (click)="setPage(pager.totalPages)">Last</a> </li>
+            </ul>
+          </div>
+        </div>
+  </form>
+  
+  <div class="tab-display">
+    <table class="table table-sm table-hover" *ngIf="orders?.length > 0">
+      <thead style="background-color: #02253b; color: #fff; font-weight: normal;">
+        <tr>
+          <th>Order ID</th>
+          <th>Client ID</th>
+          <th>Side</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Security ID</th>
+          <th>Entry Date</th>
+          <th>Symbol</th>
+          <th>Quantity</th>
+          <th>Limit Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td>{{order.id}}</td>
+          <td>{{order.clientId}}</td>
+          <td>{{order.side}}</td>
+          <td>{{order.type}}</td>
+          <td>{{order.status}}</td>
+          <td>{{order.securityId}}</td>
+          <td>{{order.recCreateTime}}</td>
+          <td>{{order.symbol}}</td>
+          <td>{{order.quantity}}</td>
+          <td>{{order.limitPrice}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="orders?.length == 0">
+      <span>No records found.</span>
+    </div>
+
+  </div>
+</ng-container>
+<app-loader></app-loader> -->
+<div>
+  Work In progress...
+</div>

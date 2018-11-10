@@ -3,7 +3,7 @@
   <h3>Order Search </h3>
 
   <!-- form complex example -->
-  <form [formGroup]="searchForm">
+  <form [formGroup]="ordersService.searchForm">
     <div class="form-row mt-3">
       <div class="col-sm-2 pb-3">
         <label for="orderid">Order ID</label>
@@ -46,7 +46,7 @@
         <label for="entrydate">Entry Date </label>
         <div class="form-group">
           <div class="input-group">
-            <select class="form-control col-sm-2" id="dateOperator" [(ngModel)]="dateOperator" formControlName="dateOperator">
+            <select class="form-control col-sm-2" id="dateOperator" [(ngModel)]="ordersService.dateOperator" formControlName="dateOperator">
               <option *ngFor="let c of dateOperators" [ngValue]="c"> {{c}} </option>
             </select>
             <input class="form-control col-sm-3" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker"
@@ -56,7 +56,7 @@
                 <span class="fa fa-calendar-o fa-sm" aria-hidden="true"></span>
               </button>
             </div>
-            <div class="input-group-append" *ngIf="dateOperator === 'bt'">
+            <div class="input-group-append" *ngIf="ordersService.dateOperator === 'bt'">
               <label>&nbsp;</label>
               <input class="form-control col-sm-6" placeholder="yyyy-mm-dd" name="dp1" ngbDatepicker #d1="ngbDatepicker"
                 formControlName="entryDateTo">
@@ -76,13 +76,13 @@
     </div>
   </form>
 </div>
-<ng-container *ngIf="orders">
-  <form [formGroup]="tableControlForm">
+<ng-container *ngIf="ordersService.orders">
+  <form [formGroup]="ordersService.tableControlForm">
       <div class="form-row tab-display">
           <div class="h-40 form-group col-sm-5">
             <div class="input-group">
               <label>&nbsp;show&nbsp;</label>
-              <select class="col-sm-2" id="pageSize" name="pageSize" [(ngModel)]="pageSize" 
+              <select class="col-sm-2" id="pageSize" name="pageSize" [(ngModel)]="ordersService.pageSize" 
               ngDefaultControl [ngModelOptions]="{standalone: true}">
                 <option [ngValue] = "r" *ngFor="let r of records"> {{r}} </option></select>
               <label>&nbsp;records per page&nbsp;</label>
@@ -90,30 +90,30 @@
           </div>
           <div class="h-40 form-group col-sm-2">
             <div class="input-group">
-              <label>&nbsp;Total records : &nbsp; {{totalRecords}}</label>
+              <label>&nbsp;Total records : &nbsp; {{ordersService.totalRecords}}</label>
             </div>
           </div>
           <div class="h-40 form-group col-sm-5">
-            <ul class="pagination pagination-sm float-right" [(ngModel)]="pageCount" [ngModelOptions]="{standalone: true}"
+            <ul class="pagination pagination-sm float-right" [(ngModel)]="ordersService.pageCount" [ngModelOptions]="{standalone: true}"
             ngDefaultControl name="pageCount">
-              <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
-                <a class="page-link" (click)="setPage(1)">First</a> </li>
-              <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
-                <a class="page-link" (click)="setPage(pager.currentPage - 1)">Prev</a> </li>
-              <li *ngFor="let page of pager.pages" class="page-item" 
-              [ngClass]="{active:pager.currentPage === page}">
-                <a class="page-link" (click)="setPage(page)">{{page}}</a> </li>
-              <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                <a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a> </li>
-              <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                <a class="page-link" (click)="setPage(pager.totalPages)">Last</a> </li>
+              <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === 1}">
+                <a class="page-link" (click)="ordersService.setPage(1)">First</a> </li>
+              <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === 1}">
+                <a class="page-link" (click)="ordersService.setPage(ordersService.pager.currentPage - 1)">Prev</a> </li>
+              <li *ngFor="let page of ordersService.pager.pages" class="page-item" 
+              [ngClass]="{active:ordersService.pager.currentPage === page}">
+                <a class="page-link" (click)="ordersService.setPage(page)">{{page}}</a> </li>
+              <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === ordersService.pager.totalPages}">
+                <a class="page-link" (click)="ordersService.setPage(ordersService.pager.currentPage + 1)">Next</a> </li>
+              <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === ordersService.pager.totalPages}">
+                <a class="page-link" (click)="ordersService.setPage(ordersService.pager.totalPages)">Last</a> </li>
             </ul>
           </div>
         </div>
   </form>
   
   <div class="tab-display">
-    <table class="table table-sm table-hover" *ngIf="orders?.length > 0">
+    <table class="table table-sm table-hover" *ngIf="ordersService.orders?.length > 0">
       <thead style="background-color: #02253b; color: #fff; font-weight: normal;">
         <tr>
           <th>Order ID</th>
@@ -129,8 +129,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of orders">
-          <td>{{order.id}}</td>
+        <tr *ngFor="let order of ordersService.orders">
+          <td><a href="javascript: void(0);" (click)="goToDetails(order)">{{order.id}}</a></td>
           <td>{{order.clientId}}</td>
           <td>{{order.side}}</td>
           <td>{{order.type}}</td>
@@ -143,7 +143,7 @@
         </tr>
       </tbody>
     </table>
-    <div *ngIf="orders?.length == 0">
+    <div *ngIf="ordersService.orders?.length == 0">
       <span>No records found.</span>
     </div>
 

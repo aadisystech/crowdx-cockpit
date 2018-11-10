@@ -4,19 +4,14 @@ import { OrdersComponent } from './orders.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PagerService } from '../utilities/pager/pager.service';
-import { LoaderComponent } from '../utilities/loader/loader.component';
-import { LoaderService } from '../utilities/loader/loader.service';
+import { UtilitiesModule } from '../utilities/utilities.module';
+import { OrderDetailsComponent } from './order-details/order-details.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    NgbModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule
+    UtilitiesModule
   ],
-  declarations: [OrdersComponent, LoaderComponent],
-  providers: [PagerService, LoaderService]
+  declarations: [OrdersComponent, OrderDetailsComponent]
 })
 export class OrdersModule { }

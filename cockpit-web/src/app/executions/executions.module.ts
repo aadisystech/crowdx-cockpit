@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ExecutionsComponent } from './executions.component';
-import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { UtilitiesModule } from '../utilities/utilities.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    NgbModule
+    UtilitiesModule
   ],
   declarations: [ExecutionsComponent]
 })
