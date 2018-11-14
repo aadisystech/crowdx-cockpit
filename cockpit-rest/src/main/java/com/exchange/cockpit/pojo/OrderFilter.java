@@ -1,5 +1,8 @@
 package com.exchange.cockpit.pojo;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +19,6 @@ public class OrderFilter {
     private String securityId;
     private String entryDateFrom;
     private String entryDateTo;
-    private String dateOperator;
     private String pageCount;
     private String pageSize;
 
@@ -86,12 +88,12 @@ public class OrderFilter {
 
     public Date getSelectedEntryDateFrom() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        return asDate(LocalDate.parse(this.getEntryDateFrom(), formatter));
+        return asDate(LocalDate.parse(this.getEntryDateFromStr(), formatter));
     }
 
     public Date getSelectedEntryDateTo() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        return asDate(LocalDate.parse(this.getEntryDateTo(), formatter));
+        return asDate(LocalDate.parse(this.getEntryDateToStr(), formatter));
     }
 
     public Date getNextEntryDate(String date) {
@@ -111,15 +113,37 @@ public class OrderFilter {
         return (Integer.valueOf(this.pageCount) - 1) * Integer.valueOf(this.pageSize);
     }
 
-    public String getEntryDateFrom() {
+    public String getEntryDateFromStr() {
         return entryDateFrom;
+    }
+
+    public Date getEntryDateFrom() {
+        Date parsedDate = null;
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
+        try {
+            parsedDate = formatter.parse(this.getEntryDateFromStr());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return parsedDate;
+    }
+
+    public Date getEntryDateTo() {
+        Date parsedDate = null;
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
+        try {
+            parsedDate = formatter.parse(this.getEntryDateToStr());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return parsedDate;
     }
 
     public void setEntryDateFrom(String entryDateFrom) {
         this.entryDateFrom = entryDateFrom;
     }
 
-    public String getEntryDateTo() {
+    public String getEntryDateToStr() {
         return entryDateTo;
     }
 
@@ -127,11 +151,4 @@ public class OrderFilter {
         this.entryDateTo = entryDateTo;
     }
 
-    public String getDateOperator() {
-        return dateOperator;
-    }
-
-    public void setDateOperator(String dateOperator) {
-        this.dateOperator = dateOperator;
-    }
 }

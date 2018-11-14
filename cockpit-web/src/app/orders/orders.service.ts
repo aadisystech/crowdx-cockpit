@@ -8,6 +8,7 @@ import { LoaderService } from '../utilities/loader/loader.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { PagerService } from '../utilities/pager/pager.service';
 import { Execution } from '../executions/execution.model';
+import { Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -19,15 +20,14 @@ export class OrdersService {
   EXECUTIONS_ORDER_ID_URL = "api/executions/orderid/";
 
   searchForm = new FormGroup({
-    orderId: new FormControl(''),
+    orderId: new FormControl('', [Validators.minLength(14)]),
     clientId: new FormControl(''),
     side: new FormControl(''),
     type: new FormControl(''),
     status: new FormControl(''),
     securityId: new FormControl(''),
-    entryDateFrom: new FormControl(''),
-    entryDateTo: new FormControl(''),
-    dateOperator: new FormControl('eq')
+    entryDateFrom: new FormControl(moment(new Date(new Date().setHours(0, 0, 0, 0)))),
+    entryDateTo: new FormControl(moment(new Date()))
   });
 
   tableControlForm = new FormGroup({
@@ -41,6 +41,7 @@ export class OrdersService {
   orders: Order[];
   totalRecords: number;
   pager: any = {};
+  showNoDataFoundAlert: boolean = false;
 
   //details page
   selectedOrder: Order;
@@ -52,13 +53,18 @@ export class OrdersService {
     this.showLoader();
     let filter = new HttpParams();
     let orderFilter: OrderFilter = this.getOrderFilter(this.searchForm.value);
-    orderFilter.dateOperator = this.dateOperator;
     orderFilter.pageCount = this.pageCount;
     orderFilter.pageSize = this.pageSize;
     filter = filter.append("filter", JSON.stringify(orderFilter));
     return this.httpClient.get<Order[]>(this.ORDERS_URL, { params: filter }).subscribe(
       res => {
         this.orders = res
+        if (this.orders.length == 0) {
+          this.showNoDataFoundAlert = true;
+          setTimeout(() => {
+            this.showNoDataFoundAlert = false;
+          }, 3000);
+        }
         this.hideLoader();
       }
     );
@@ -67,7 +73,6 @@ export class OrdersService {
   getOrdersTotalCount() {
     let filter = new HttpParams();
     let orderFilter: OrderFilter = this.getOrderFilter(this.searchForm.value);
-    orderFilter.dateOperator = this.dateOperator;
     filter = filter.append("filter", JSON.stringify(orderFilter));
     return this.httpClient.get<number>(this.ORDERS_TOTAL_COUNT_URL, { params: filter }).subscribe(
       res => {
@@ -88,6 +93,9 @@ export class OrdersService {
   }
 
   setPage(page: number, load: boolean = true) {
+    console.log('page ' + page);
+    console.log('this.pager.totalPages ' + this.pager.totalPages);
+    console.log('this.pager.currentPage ' + this.pager.currentPage);
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
@@ -95,6 +103,7 @@ export class OrdersService {
       return;
     }
     this.pager = this.pagerService.getPager(this.totalRecords, page, this.pageSize);
+    console.log('this.pager ' + this.pager);
     this.pageCount = page;
     if (load) {
       this.showLoader();
@@ -124,19 +133,12 @@ export class OrdersService {
       filter.securityId = formValue.securityId;
     }
     if (formValue.entryDateFrom != '') {
-      filter.entryDateFrom = this.formatDate(formValue.entryDateFrom);
+      filter.entryDateFrom = formValue.entryDateFrom.format("YYYY-MM-DD HH:mm:ss");
     }
     if (formValue.entryDateTo != '') {
-      filter.entryDateTo = this.formatDate(formValue.entryDateTo);
+      filter.entryDateTo = formValue.entryDateTo.format("YYYY-MM-DD HH:mm:ss");
     }
     return filter;
-  }
-
-  formatDate(d) {
-    var yyyy = d.year.toString();
-    var mm = (d.month + 100).toString().slice(-2);
-    var dd = (d.day + 100).toString().slice(-2);
-    return yyyy + mm + dd;
   }
 
   private showLoader(): void {

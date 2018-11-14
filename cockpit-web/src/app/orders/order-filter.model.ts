@@ -7,7 +7,6 @@ export class OrderFilter {
     securityId: string;
     entryDateFrom: string;
     entryDateTo: string;
-    dateOperator: string;
     pageSize: number;
     pageCount: number;
 }

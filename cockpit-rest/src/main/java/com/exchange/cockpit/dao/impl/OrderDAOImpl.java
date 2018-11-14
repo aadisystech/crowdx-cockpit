@@ -57,46 +57,26 @@ public class OrderDAOImpl implements OrderDAO {
             System.out.println("orderFilter.getOrderId() " + orderFilter.getOrderId());
             if (orderFilter.getOrderId() != null) {
                 lp.add(cb.equal(r.get("id"), orderFilter.getOrderId()));
-                //criteria.where(cb.equal(r.get("id"), orderFilter.getOrderId()));
             }
             if (orderFilter.getClientId() != null) {
                 lp.add(cb.equal(r.get("clientId"), orderFilter.getClientId()));
-                //criteria.where(cb.equal(r.get("clientId"), orderFilter.getClientId()));
             }
             if (orderFilter.getSide() != null) {
                 lp.add(cb.equal(r.get("side"), orderFilter.getSide()));
-                //criteria.where(cb.equal(r.get("side"), orderFilter.getSide()));
             }
             if (orderFilter.getType() != null) {
                 lp.add(cb.equal(r.get("type"), orderFilter.getType()));
-                //criteria.where(cb.equal(r.get("type"), orderFilter.getType()));
             }
             if (orderFilter.getStatus() != null) {
                 lp.add(cb.equal(r.get("status"), orderFilter.getStatus()));
-                //criteria.where(cb.equal(r.get("status"), orderFilter.getStatus()));
             }
             if (orderFilter.getSecurityId() != null) {
                 lp.add(cb.equal(r.get("securityId"), orderFilter.getSecurityId()));
-                //criteria.where(cb.equal(r.get("securityId"), orderFilter.getSecurityId()));
             }
+            if (orderFilter.getEntryDateFrom() != null && orderFilter.getEntryDateTo() != null) {
+                lp.add(cb.greaterThanOrEqualTo(r.get("recCreateTime"), orderFilter.getEntryDateFrom()));
+                lp.add(cb.lessThanOrEqualTo(r.get("recCreateTime"), orderFilter.getEntryDateTo  ()));
 
-            if (orderFilter.getEntryDateFrom() != null) {
-                switch (orderFilter.getDateOperator()) {
-                    case "eq":
-                        lp.add(cb.greaterThanOrEqualTo(r.get("recCreateTime"), orderFilter.getSelectedEntryDateFrom()));
-                        lp.add(cb.lessThan(r.get("recCreateTime"), orderFilter.getNextEntryDate(orderFilter.getEntryDateFrom())));
-                        break;
-                    case "le" :
-                        lp.add(cb.lessThanOrEqualTo(r.get("recCreateTime"), orderFilter.getSelectedEntryDateFrom()));
-                        break;
-                    case "ge" :
-                        lp.add(cb.greaterThanOrEqualTo(r.get("recCreateTime"), orderFilter.getSelectedEntryDateFrom()));
-                        break;
-                    case "bt" :
-                        lp.add(cb.greaterThanOrEqualTo(r.get("recCreateTime"), orderFilter.getSelectedEntryDateFrom()));
-                        lp.add(cb.lessThanOrEqualTo(r.get("recCreateTime"), orderFilter.getNextEntryDate(orderFilter.getEntryDateTo())));
-                        break;
-                }
             }
         }
         return lp;

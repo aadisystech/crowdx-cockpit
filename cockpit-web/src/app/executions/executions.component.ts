@@ -13,16 +13,15 @@ import { Execution } from './execution.model';
 export class ExecutionsComponent implements OnInit {
 
   searchForm = new FormGroup({
+    executionId : new FormControl(''),
     orderId: new FormControl(''),
-    clientId: new FormControl(''),
-    side: new FormControl(''),
     type: new FormControl(''),
-    status: new FormControl(''),
-    securityId: new FormControl(''),
-    entryDateFrom: new FormControl(''),
-    entryDateTo: new FormControl(''),
-    dateOperator: new FormControl('eq')
+    createDateFrom: new FormControl(''),
+    createDateTo: new FormControl('')
   });
+
+  createDateFrom: Date = new Date();
+  createDateTo: Date = new Date();
 
   tableControlForm = new FormGroup({
     pageSize: new FormControl(10),
@@ -38,9 +37,18 @@ export class ExecutionsComponent implements OnInit {
   totalRecords: number;
   pager: any = {};
 
+  options = {
+    // format: "DD.MM.YYYY",
+    // maxDate: moment(),
+    // minDate: date,
+    
+};
+
   constructor(private executionsService: ExecutionsService, private pagerService: PagerService, private loaderService: LoaderService) { }
 
   ngOnInit() {
+    this.createDateFrom.setHours(0);
+    this.createDateFrom.setMinutes(0);
   }
 
   getOrders() {
@@ -57,6 +65,14 @@ export class ExecutionsComponent implements OnInit {
         this.setPage(1, false);
       }
     ) 
+  }
+
+  checkToDate() {
+    console.log('checkToDate called');
+  }
+
+  checkFromDate() {
+    console.log('checkFromDate called');
   }
 
   setPage(page: number, load: boolean = true) {

@@ -42,76 +42,86 @@
         <label for="securityid">Security ID</label>
         <input type="text" class="form-control" id="securityid" formControlName="securityId">
       </div>
-      <div class="col-sm-4 pb-3">
-        <label for="entrydate">Entry Date </label>
+      <div class="col-sm-2 pb-3">
+        <label for="entrydate">Entry Date (From)</label>
         <div class="form-group">
-          <div class="input-group">
-            <select class="form-control col-sm-2" id="dateOperator" [(ngModel)]="ordersService.dateOperator" formControlName="dateOperator">
-              <option *ngFor="let c of dateOperators" [ngValue]="c"> {{c}} </option>
-            </select>
-            <input class="form-control col-sm-3" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker"
-              formControlName="entryDateFrom">
-            <div class="input-group-append">
-              <button class="btn btn-outline-primary" (click)="d.toggle()" type="button">
-                <span class="fa fa-calendar-o fa-sm" aria-hidden="true"></span>
-              </button>
+          <div class="input-group date" data-target-input="nearest" NgTempusdominusBootstrap>
+            <input class="form-control" (ngModelChange)="checkFromDate()" [options]="options"
+              NgTempusdominusBootstrapInput type="text" formControlName="entryDateFrom" />
+            <div class="input-group-append" NgTempusdominusBootstrapToggle>
+              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
             </div>
-            <div class="input-group-append" *ngIf="ordersService.dateOperator === 'bt'">
-              <label>&nbsp;</label>
-              <input class="form-control col-sm-6" placeholder="yyyy-mm-dd" name="dp1" ngbDatepicker #d1="ngbDatepicker"
-                formControlName="entryDateTo">
-              <div class="input-group-append">
-                <button class="btn btn-outline-primary" (click)="d1.toggle()" type="button">
-                  <span class="fa fa-calendar-o fa-sm" aria-hidden="true"></span>
-                </button>
-              </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2 pb-3">
+        <label for="entrydate">Entry date (To)</label>
+        <div class="form-group">
+          <div class="input-group date" data-target-input="nearest" NgTempusdominusBootstrap>
+            <input class="form-control" (ngModelChange)="checkToDate()" [options]="options"
+              NgTempusdominusBootstrapInput type="text" formControlName="entryDateTo" />
+            <div class="input-group-append" NgTempusdominusBootstrapToggle>
+              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
             </div>
           </div>
         </div>
       </div>
       <div class="col-sm-1 pb-3">
         <label for="entrytime">&nbsp;</label>
-        <button type="button" class="form-control btn btn-primary pull-right" (click)="getOrders()">Search</button>
+        <button type="button" class="form-control btn btn-primary pull-right" [disabled]="ordersService.searchForm.invalid || !isDateValid"
+          (click)="getOrders()">Search</button>
       </div>
     </div>
   </form>
 </div>
-<ng-container *ngIf="ordersService.orders">
+<!--Form Validation-->
+<div *ngIf="ordersService.searchForm.get('orderId').invalid && 
+(ordersService.searchForm.get('orderId').dirty || ordersService.searchForm.get('orderId').touched)"
+  class="alert alert-danger">
+  <div *ngIf="ordersService.searchForm.get('orderId').errors.minlength">
+    Order ID must be at least 14 characters long.
+  </div>
+</div>
+<div class="alert alert-danger" *ngIf="!isDateValid">
+  From Date must be before To Date.
+</div>
+<!-- Table to display Orders-->
+<ng-container *ngIf="ordersService.orders?.length > 0">
   <form [formGroup]="ordersService.tableControlForm">
-      <div class="form-row tab-display">
-          <div class="h-40 form-group col-sm-5">
-            <div class="input-group">
-              <label>&nbsp;show&nbsp;</label>
-              <select class="col-sm-2" id="pageSize" name="pageSize" [(ngModel)]="ordersService.pageSize" 
-              ngDefaultControl [ngModelOptions]="{standalone: true}">
-                <option [ngValue] = "r" *ngFor="let r of records"> {{r}} </option></select>
-              <label>&nbsp;records per page&nbsp;</label>
-            </div>
-          </div>
-          <div class="h-40 form-group col-sm-2">
-            <div class="input-group">
-              <label>&nbsp;Total records : &nbsp; {{ordersService.totalRecords}}</label>
-            </div>
-          </div>
-          <div class="h-40 form-group col-sm-5">
-            <ul class="pagination pagination-sm float-right" [(ngModel)]="ordersService.pageCount" [ngModelOptions]="{standalone: true}"
-            ngDefaultControl name="pageCount">
-              <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === 1}">
-                <a class="page-link" (click)="ordersService.setPage(1)">First</a> </li>
-              <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === 1}">
-                <a class="page-link" (click)="ordersService.setPage(ordersService.pager.currentPage - 1)">Prev</a> </li>
-              <li *ngFor="let page of ordersService.pager.pages" class="page-item" 
-              [ngClass]="{active:ordersService.pager.currentPage === page}">
-                <a class="page-link" (click)="ordersService.setPage(page)">{{page}}</a> </li>
-              <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === ordersService.pager.totalPages}">
-                <a class="page-link" (click)="ordersService.setPage(ordersService.pager.currentPage + 1)">Next</a> </li>
-              <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === ordersService.pager.totalPages}">
-                <a class="page-link" (click)="ordersService.setPage(ordersService.pager.totalPages)">Last</a> </li>
-            </ul>
-          </div>
+    <div class="form-row tab-display">
+      <div class="h-40 form-group col-sm-5">
+        <div class="input-group">
+          <label>&nbsp;show&nbsp;</label>
+          <select class="col-sm-2" id="pageSize" name="pageSize" [(ngModel)]="ordersService.pageSize" ngDefaultControl
+            [ngModelOptions]="{standalone: true}">
+            <option [ngValue]="r" *ngFor="let r of records"> {{r}} </option>
+          </select>
+          <label>&nbsp;records per page&nbsp;</label>
         </div>
+      </div>
+      <div class="h-40 form-group col-sm-2">
+        <div class="input-group">
+          <label>&nbsp;Total records : &nbsp; {{ordersService.totalRecords}}</label>
+        </div>
+      </div>
+      <div class="h-40 form-group col-sm-5">
+        <ul class="pagination pagination-sm float-right" [(ngModel)]="ordersService.pageCount" [ngModelOptions]="{standalone: true}"
+          ngDefaultControl name="pageCount">
+          <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === 1}">
+            <a class="page-link" (click)="ordersService.setPage(1)">First</a> </li>
+          <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === 1}">
+            <a class="page-link" (click)="ordersService.setPage(ordersService.pager.currentPage - 1)">Prev</a> </li>
+          <li *ngFor="let page of ordersService.pager.pages" class="page-item" [ngClass]="{active:ordersService.pager.currentPage === page}">
+            <a class="page-link" (click)="ordersService.setPage(page)">{{page}}</a> </li>
+          <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === ordersService.pager.totalPages}">
+            <a class="page-link" (click)="ordersService.setPage(ordersService.pager.currentPage + 1)">Next</a> </li>
+          <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === ordersService.pager.totalPages}">
+            <a class="page-link" (click)="ordersService.setPage(ordersService.pager.totalPages)">Last</a> </li>
+        </ul>
+      </div>
+    </div>
   </form>
-  
+
   <div class="tab-display">
     <table class="table table-sm table-hover" *ngIf="ordersService.orders?.length > 0">
       <thead style="background-color: #02253b; color: #fff; font-weight: normal;">
@@ -143,10 +153,10 @@
         </tr>
       </tbody>
     </table>
-    <div *ngIf="ordersService.orders?.length == 0">
-      <span>No records found.</span>
-    </div>
-
   </div>
 </ng-container>
+<div class="alert alert-danger" *ngIf="ordersService.showNoDataFoundAlert">
+  <span>No records found.</span>
+</div>
+
 <app-loader></app-loader>
