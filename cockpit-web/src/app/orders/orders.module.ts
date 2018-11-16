@@ -8,6 +8,7 @@ import { UtilitiesModule } from '../utilities/utilities.module';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { OrderSearchByIdComponent } from './order-search-by-id/order-search-by-id.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     NgTempusdominusBootstrapModule
   ],
-  declarations: [OrdersComponent, OrderDetailsComponent]
+  declarations: [OrdersComponent, OrderDetailsComponent, OrderSearchByIdComponent]
 })
 export class OrdersModule { }

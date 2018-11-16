@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
 import { Order } from './order.model';
-import { Observable } from 'rxjs';
 import * as moment from 'moment'
 import { OrderFilter } from './order-filter.model';
 import { LoaderService } from '../utilities/loader/loader.service';
@@ -47,6 +46,10 @@ export class OrdersService {
   selectedOrder: Order;
   executions: Execution[] = [];
 
+  //search by id
+  searchedOrder: Order;
+  executionsForSearchedOrderId: Execution[] = [];
+
   constructor(private httpClient: HttpClient, private pagerService: PagerService, private loaderService: LoaderService) { }
 
   getOrders() {
@@ -70,14 +73,19 @@ export class OrdersService {
     );
   }
 
-  getOrdersTotalCount() {
+  getOrdersTotalCount(initial: boolean = true, changePager:boolean = false, page:number = 1) {
     let filter = new HttpParams();
     let orderFilter: OrderFilter = this.getOrderFilter(this.searchForm.value);
     filter = filter.append("filter", JSON.stringify(orderFilter));
     return this.httpClient.get<number>(this.ORDERS_TOTAL_COUNT_URL, { params: filter }).subscribe(
       res => {
         this.totalRecords = res
-        this.setPage(1, false);
+        if (initial) {
+          this.setPage(page);
+        }
+        if (changePager) {
+          this.pager = this.pagerService.getPager(this.totalRecords, page, this.pageSize);
+        }
       }
     );
   }
@@ -92,24 +100,55 @@ export class OrdersService {
     )
   }
 
-  setPage(page: number, load: boolean = true) {
-    console.log('page ' + page);
-    console.log('this.pager.totalPages ' + this.pager.totalPages);
-    console.log('this.pager.currentPage ' + this.pager.currentPage);
+  getOrderById(orderId: string) {
+    this.searchedOrder = undefined;
+    this.executionsForSearchedOrderId = [];
+    this.showLoader();
+    let filter = new HttpParams();
+    let orderFilter: OrderFilter = new OrderFilter();
+    orderFilter.orderId = orderId;
+    orderFilter.pageCount = 1;
+    orderFilter.pageSize = 1;
+    filter = filter.append("filter", JSON.stringify(orderFilter));
+    return this.httpClient.get<Order>(this.ORDERS_URL, { params: filter }).subscribe(
+      res => {
+        if (Array.isArray(res)) {
+          if ((<Array<Order>>res).length > 0) {
+            this.searchedOrder = res[0]
+            this.getExecutionsForOrderIdSearch();
+            console.log("<<>>" + this.searchedOrder.side);
+          }
+        }
+        this.hideLoader();
+      }
+    );
+  }
+
+  getExecutionsForOrderIdSearch() {
+    this.showLoader();
+    return this.httpClient.get<Execution[]>(this.EXECUTIONS_ORDER_ID_URL + this.searchedOrder.id).subscribe(
+      res => {
+        this.executionsForSearchedOrderId = res;
+        this.hideLoader();
+      }
+    )
+  }
+
+  setPage(page: number) {
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
-    if (this.pager.currentPage === page) {
+    this.pager = this.pagerService.getPager(this.totalRecords, page, this.pageSize);
+    this.pageCount = page;
+  }
+
+  onPageNumberChange(page: number) {
+    if (page < 1 || page > this.pager.totalPages) {
       return;
     }
-    this.pager = this.pagerService.getPager(this.totalRecords, page, this.pageSize);
-    console.log('this.pager ' + this.pager);
     this.pageCount = page;
-    if (load) {
-      this.showLoader();
-      this.getOrders();
-    }
-
+    this.getOrders();
+    this.getOrdersTotalCount(false, true, page);
   }
 
   getOrderFilter(formValue: any): OrderFilter {
@@ -139,6 +178,14 @@ export class OrdersService {
       filter.entryDateTo = formValue.entryDateTo.format("YYYY-MM-DD HH:mm:ss");
     }
     return filter;
+  }
+
+  onPageSizeChane() {
+    console.log(this.pageSize);
+    this.pageCount = 1;
+    this.getOrders();
+    this.getOrdersTotalCount();
+    //this.pager = this.pagerService.getPager(this.totalRecords, 1, this.pageSize);
   }
 
   private showLoader(): void {

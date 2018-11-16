@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
 import { ExecutionsService } from './executions.service';
 import { PagerService } from '../utilities/pager/pager.service';
 import { LoaderService } from '../utilities/loader/loader.service';
-import { Execution } from './execution.model';
 
 @Component({
   selector: 'app-executions',
@@ -12,94 +10,51 @@ import { Execution } from './execution.model';
 })
 export class ExecutionsComponent implements OnInit {
 
-  searchForm = new FormGroup({
-    executionId : new FormControl(''),
-    orderId: new FormControl(''),
-    type: new FormControl(''),
-    createDateFrom: new FormControl(''),
-    createDateTo: new FormControl('')
-  });
-
-  createDateFrom: Date = new Date();
-  createDateTo: Date = new Date();
-
-  tableControlForm = new FormGroup({
-    pageSize: new FormControl(10),
-    pageCount: new FormControl(1)
-  })
-
-  dateOperators: string[] = ['eq', 'le', 'ge', 'bt'];
-  records: number[] = [10, 25, 50, 100];
-  pageSize: number = 10;
-  pageCount: number = 1;
-  dateOperator: string = 'eq';
-  executions: Execution[];
-  totalRecords: number;
-  pager: any = {};
+  isDateValid = true;
 
   options = {
-    // format: "DD.MM.YYYY",
-    // maxDate: moment(),
-    // minDate: date,
-    
-};
+    format: "DD-MM-YYYY HH:mm:SS",
+    buttons: { showClose: true }, icons: { clear: 'fa fa-trash' }
+  };
 
-  constructor(private executionsService: ExecutionsService, private pagerService: PagerService, private loaderService: LoaderService) { }
+  constructor(private executionsService: ExecutionsService) { }
 
-  ngOnInit() {
-    this.createDateFrom.setHours(0);
-    this.createDateFrom.setMinutes(0);
+  ngOnInit() {    
   }
 
-  getOrders() {
-    this.showLoader();
-    this.executionsService.getExecutions(this.searchForm.value, this.dateOperator, this.pageSize, this.pageCount).subscribe(
-      res => {
-        this.executions = res
-        this.hideLoader();
-      }
-    )
-    this.executionsService.getExecutionsTotalCount(this.searchForm.value, this.dateOperator).subscribe(
-      res => {
-        this.totalRecords = res
-        this.setPage(1, false);
-      }
-    ) 
+  getExecutions() {
+    this.executionsService.getExecutions();
+    this.executionsService.getExecutionsTotalCount();
   }
 
   checkToDate() {
     console.log('checkToDate called');
+    if (this.executionsService.searchForm.get("createDateFrom")) {
+      let toDate = this.executionsService.searchForm.get("createDateTo").value;
+      if (toDate.isBefore(this.executionsService.searchForm.get("createDateFrom").value)) {
+        console.log("WORKING To");
+        this.isDateValid = false;
+      } else {
+        this.isDateValid = true;
+      }
+    } else {
+      this.isDateValid = true;
+    }
   }
 
   checkFromDate() {
     console.log('checkFromDate called');
-  }
-
-  setPage(page: number, load: boolean = true) {
-    if (page < 1 || page > this.pager.totalPages) {
-      return;
+    if (this.executionsService.searchForm.get("createDateTo")) {
+      let fromDate = this.executionsService.searchForm.get("createDateFrom").value;
+      if (fromDate.isAfter(this.executionsService.searchForm.get("createDateTo").value)) {
+        console.log("WORKING From");
+        this.isDateValid = false;
+      } else {
+        this.isDateValid = true;
+      }
+    } else {
+      this.isDateValid = true;
     }
-    if (this.pager.currentPage === page) {
-      return;
-    }
-    this.pager = this.pagerService.getPager(this.totalRecords, page, this.pageSize);
-    this.pageCount = page;
-    if (load) {
-      this.showLoader();
-      this.executionsService.getExecutions(this.searchForm.value, this.dateOperator, this.pageSize, this.pageCount).subscribe(
-        res => {
-          this.executions = res;
-          this.hideLoader();
-        }
-      )
-    }
-   
-  }
-  private showLoader(): void {
-    this.loaderService.show();
-  }
-  private hideLoader(): void {
-    this.loaderService.hide();
-  }
+  }  
 
 }

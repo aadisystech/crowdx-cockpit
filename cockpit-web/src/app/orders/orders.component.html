@@ -93,7 +93,7 @@
         <div class="input-group">
           <label>&nbsp;show&nbsp;</label>
           <select class="col-sm-2" id="pageSize" name="pageSize" [(ngModel)]="ordersService.pageSize" ngDefaultControl
-            [ngModelOptions]="{standalone: true}">
+            [ngModelOptions]="{standalone: true}" (change)="ordersService.onPageSizeChane()">
             <option [ngValue]="r" *ngFor="let r of records"> {{r}} </option>
           </select>
           <label>&nbsp;records per page&nbsp;</label>
@@ -108,15 +108,15 @@
         <ul class="pagination pagination-sm float-right" [(ngModel)]="ordersService.pageCount" [ngModelOptions]="{standalone: true}"
           ngDefaultControl name="pageCount">
           <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === 1}">
-            <a class="page-link" (click)="ordersService.setPage(1)">First</a> </li>
+            <a class="page-link" (click)="ordersService.onPageNumberChange(1)">First</a> </li>
           <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === 1}">
-            <a class="page-link" (click)="ordersService.setPage(ordersService.pager.currentPage - 1)">Prev</a> </li>
+            <a class="page-link" (click)="ordersService.onPageNumberChange(ordersService.pager.currentPage - 1)">Prev</a> </li>
           <li *ngFor="let page of ordersService.pager.pages" class="page-item" [ngClass]="{active:ordersService.pager.currentPage === page}">
-            <a class="page-link" (click)="ordersService.setPage(page)">{{page}}</a> </li>
+            <a class="page-link" (click)="ordersService.onPageNumberChange(page)">{{page}}</a> </li>
           <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === ordersService.pager.totalPages}">
-            <a class="page-link" (click)="ordersService.setPage(ordersService.pager.currentPage + 1)">Next</a> </li>
+            <a class="page-link" (click)="ordersService.onPageNumberChange(ordersService.pager.currentPage + 1)">Next</a> </li>
           <li class="page-item" [ngClass]="{disabled:ordersService.pager.currentPage === ordersService.pager.totalPages}">
-            <a class="page-link" (click)="ordersService.setPage(ordersService.pager.totalPages)">Last</a> </li>
+            <a class="page-link" (click)="ordersService.onPageNumberChange(ordersService.pager.totalPages)">Last</a> </li>
         </ul>
       </div>
     </div>

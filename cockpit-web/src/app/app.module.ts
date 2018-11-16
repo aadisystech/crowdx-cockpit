@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { OrdersModule } from './orders/orders.module';
 import { ExecutionsModule } from './executions/executions.module';
 import { InstrumentsComponent } from './instruments/instruments.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { InstrumentsComponent } from './instruments/instruments.component';
     BrowserModule,
     AppRoutingModule,
     OrdersModule,
-    ExecutionsModule
+    ExecutionsModule,
+    FormsModule
   ],
   exports: [
     OrdersModule

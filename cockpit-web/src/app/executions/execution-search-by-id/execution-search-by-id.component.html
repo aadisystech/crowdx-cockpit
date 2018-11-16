@@ -1,0 +1,205 @@
+<div *ngIf="executionsService.searchedExecution">
+  <div class="row">
+    <div class="col-sm-11 col-lg-11">
+      <h3>Execution Details for {{executionsService.searchedExecution?.executionId}}:</h3>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-sm-2 border border-light tab-col">
+      Execution ID
+    </div>
+    <div class="col-sm-2 border border-light font-weight-bold">
+      {{executionsService.searchedExecution?.executionId}}
+    </div>
+    <div class="col-sm-2 border border-light tab-col">
+      Order ID
+    </div>
+    <div class="col-sm-2 border border-light font-weight-bold">
+      {{executionsService.searchedExecution?.orderId}}
+    </div>
+    <div class="col-sm-2 border border-light tab-col">
+      Type
+    </div>
+    <div class="col-sm-2 border border-light font-weight-bold">
+      {{executionsService.searchedExecution?.execType}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-2 border border-light tab-col">
+      Tran type
+    </div>
+    <div class="col-sm-2 border border-light font-weight-bold">
+      {{executionsService.searchedExecution?.execTranType}}
+    </div>
+    <div class="col-sm-2 border border-light tab-col">
+      Last Shares
+    </div>
+    <div class="col-sm-2 border border-light font-weight-bold">
+      {{executionsService.searchedExecution?.lastShares}}
+    </div>
+    <div class="col-sm-2 border border-light tab-col">
+      Last Price
+    </div>
+    <div class="col-sm-2 border border-light font-weight-bold">
+      {{executionsService.searchedExecution?.lastPrice}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-2 border border-light tab-col">
+      Leaves Quantity
+    </div>
+    <div class="col-sm-2 border border-light font-weight-bold">
+      {{executionsService.searchedExecution?.leavesQuantity}}
+    </div>
+    <div class="col-sm-2 border border-light tab-col">
+      Cumulative Quantity
+    </div>
+    <div class="col-sm-2 border border-light font-weight-bold">
+      {{executionsService.searchedExecution?.cumQuantity}}
+    </div>
+    <div class="col-sm-2 border border-light tab-col">
+      Average Price
+    </div>
+    <div class="col-sm-2 border border-light font-weight-bold">
+      {{executionsService.searchedExecution?.avgPrice}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-2 border border-light tab-col">
+    </div>
+    <div class="col-sm-2 border border-light font-weight-bold">
+    </div>
+    <div class="col-sm-2 border border-light tab-col">
+      Record Create Time
+    </div>
+    <div class="col-sm-2 border border-light font-weight-bold">
+      {{executionsService.searchedExecution?.recCreateTime}}
+    </div>
+    <div class="col-sm-2 border border-light tab-col">
+    </div>
+    <div class="col-sm-2 border border-light font-weight-bold">
+    </div>
+  </div>
+  <br />
+  <h3>Order Details:</h3>
+  <hr>
+  <div class="row">
+      <div class="col-sm-2 border border-light tab-col">
+        Order ID
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.id}}
+      </div>
+      <div class="col-sm-2 border border-light tab-col">
+        Client ID
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.clientId}}
+      </div>
+      <div class="col-sm-2 border border-light tab-col">
+        Side
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.side}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 border border-light tab-col">
+        Type
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.type}}
+      </div>
+      <div class="col-sm-2 border border-light tab-col">
+        Time In Force
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.tif}}
+      </div>
+      <div class="col-sm-2 border border-light tab-col">
+        Status
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.status}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 border border-light tab-col">
+        Original Client Id
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.origClientId}}
+      </div>
+      <div class="col-sm-2 border border-light tab-col">
+        Symbol
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.symbol}}
+      </div>
+      <div class="col-sm-2 border border-light tab-col">
+        Security Id
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.securityId}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 border border-light tab-col">
+        ID Source
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.idSource}}
+      </div>
+      <div class="col-sm-2 border border-light tab-col">
+        Quantity
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.quantity}}
+      </div>
+      <div class="col-sm-2 border border-light tab-col">
+        Open Quantity
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.openQuantity}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 border border-light tab-col">
+        Executed Quantity
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.executedQuantity}}
+      </div>
+      <div class="col-sm-2 border border-light tab-col">
+        Limit Price
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.limitPrice}}
+      </div>
+      <div class="col-sm-2 border border-light tab-col">
+        Avg Price
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.avgPrice}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 border border-light tab-col">
+        Create Time
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.recCreateTime}}
+      </div>
+      <div class="col-sm-2 border border-light tab-col">
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+      </div>
+      <div class="col-sm-2 border border-light tab-col">
+        Update Time
+      </div>
+      <div class="col-sm-2 border border-light font-weight-bold">
+        {{executionsService.orderForExecutionId?.recUpdateTime}}
+      </div>
+    </div>
+  <app-loader></app-loader>

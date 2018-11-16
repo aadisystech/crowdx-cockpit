@@ -6,6 +6,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CalendarModule} from 'primeng/calendar';
 import { NgTempusdominusBootstrapModule } from 'ngx-tempusdominus-bootstrap';
+import { ExecutionSearchByIdComponent } from './execution-search-by-id/execution-search-by-id.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { NgTempusdominusBootstrapModule } from 'ngx-tempusdominus-bootstrap';
     CalendarModule,
     NgTempusdominusBootstrapModule 
   ],
-  declarations: [ExecutionsComponent]
+  declarations: [ExecutionsComponent, ExecutionSearchByIdComponent]
 })
 export class ExecutionsModule { }

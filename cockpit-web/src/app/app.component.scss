@@ -5,3 +5,14 @@
     height: 75px;
     width: 75px;
 }
+a:hover {
+    text-decoration: none;
+}
+.fa-search{
+    background-color: #212529;
+    color: grey;
+    border: 0;
+}
+.fa-search:hover {
+    color: white;
+}

@@ -1,20 +1,12 @@
 export class Execution {
-    id : string;
-    side : string;
-    type: string;
-    tif : string;
-    status : string;
-    clientId : string;
-    origClientId : string;
-    symbol : string;
-    securityId : string;
-    idSource : string;
-    quantity : number;
-    openQuantity : number;
-    executedQuantity : number;
-    limitPrice : number;
+    executionId : string;
+    orderId : string;
+    execType: string;
+    execTranType : string;
+    lastShares : number;
+    lastPrice : number;
+    leavesQuantity : number;
+    cumQuantity : number;
     avgPrice : number;
     recCreateTime : Date;
-    lastUpdateTime : Date;
-
 }

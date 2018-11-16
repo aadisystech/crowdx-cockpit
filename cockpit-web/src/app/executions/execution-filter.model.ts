@@ -1,13 +1,9 @@
 export class ExecutionFilter {
+    executionId: string;
     orderId: string;
-    clientId: string;
-    side: string;
     type: string;
-    status: string;
-    securityId: string;
-    entryDateFrom: string;
-    entryDateTo: string;
-    dateOperator: string;
+    createDateFrom: string;
+    createDateTo: string;
     pageSize: number;
     pageCount: number;
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,25 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'cockpit';
 
-  routeToOrders() {
-    console.log('routeToOrders');
+  idInput: string;
+
+  constructor(private router: Router) {
+    
   }
+
+  onSearch() {
+    if (this.idInput != undefined) {
+      if (this.idInput.startsWith("O") && this.idInput.length == 14) {
+        window.open('orders/' + this.idInput);
+      } else if  (this.idInput.startsWith("E") && this.idInput.length == 14) {
+        window.open('executions/' + this.idInput);
+      } else {
+        alert("Please enter a valid ID");
+      }
+    }
+  }
+  
+  
 }
+
+
