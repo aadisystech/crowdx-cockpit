@@ -40,4 +40,10 @@ public class OrderServiceImpl implements OrderService {
         System.out.println(o);
         return o;
     }
+
+    @Override
+    public String getOrderFromId(String orderId) {
+        Order o = orderDAO.getOrderById(orderId);
+        return jsonConverter.buildJSONStringForOrder(o);
+    }
 }

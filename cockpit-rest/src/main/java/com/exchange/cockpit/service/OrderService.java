@@ -5,4 +5,6 @@ public interface OrderService {
     String getOrders(String filter);
 
     Long getOrdersTotalCount(String filter);
+
+    String getOrderFromId(String orderId);
 }

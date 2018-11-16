@@ -22,5 +22,9 @@ public class OrderController {
         return orderService.getOrdersTotalCount(filter);
     }
 
-
+    @GetMapping("/api/orders/{orderId}")
+    public String getOrder(@PathVariable String orderId) {
+        System.out.println("Inside execustiosn orderId " + orderId);
+        return orderService.getOrderFromId(orderId);
+    }
 }

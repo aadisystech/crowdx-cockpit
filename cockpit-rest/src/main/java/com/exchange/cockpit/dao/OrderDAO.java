@@ -10,4 +10,6 @@ public interface OrderDAO {
     List<Order> getOrders(OrderFilter orderFilter);
 
     Long getOrdersTotalCount(OrderFilter orderFilter);
+
+    Order getOrderById(String orderId);
 }

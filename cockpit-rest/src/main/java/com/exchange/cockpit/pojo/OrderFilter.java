@@ -86,25 +86,6 @@ public class OrderFilter {
         this.orderId = orderId;
     }
 
-    public Date getSelectedEntryDateFrom() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        return asDate(LocalDate.parse(this.getEntryDateFromStr(), formatter));
-    }
-
-    public Date getSelectedEntryDateTo() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        return asDate(LocalDate.parse(this.getEntryDateToStr(), formatter));
-    }
-
-    public Date getNextEntryDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        Date nextDate = asDate(LocalDate.parse(date, formatter));
-        Calendar c = Calendar.getInstance();
-        c.setTime(nextDate);
-        c.add(Calendar.DATE, 1);
-        return c.getTime();
-    }
-
     private static Date asDate(LocalDate localDate) {
         return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
@@ -118,6 +99,9 @@ public class OrderFilter {
     }
 
     public Date getEntryDateFrom() {
+        if (this.getEntryDateFromStr() == null) {
+            return null;
+        }
         Date parsedDate = null;
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
         try {
@@ -129,6 +113,9 @@ public class OrderFilter {
     }
 
     public Date getEntryDateTo() {
+        if (this.getEntryDateToStr() == null) {
+            return null;
+        }
         Date parsedDate = null;
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
         try {

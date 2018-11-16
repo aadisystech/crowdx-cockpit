@@ -1,10 +1,10 @@
 package com.exchange.cockpit.service;
 
-import com.exchange.cockpit.entity.Execution;
-
-import java.util.List;
-
 public interface ExecutionService {
+
+    String getExecutions(String filter);
+
+    Long getExecutionsTotalCount(String filter);
 
     String getExecutionsFromOrderId(String orderId);
 }

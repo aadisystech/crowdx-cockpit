@@ -50,6 +50,18 @@ public class OrderDAOImpl implements OrderDAO {
         return (Long)q.getSingleResult();
     }
 
+    @Override
+    @Transactional
+    public Order getOrderById(String orderId) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
+        Root<Order> r = criteria.from(Order.class);
+        criteria.select(r).where(cb.equal(r.get("id"), orderId));
+        Query q = session.createQuery(criteria);
+        return (Order) q.getSingleResult();
+    }
+
     private List<Predicate> getPredicates(OrderFilter orderFilter, CriteriaBuilder cb, Root<Order> r) {
         List<Predicate> lp = new ArrayList<>();
         int i = 0;
@@ -75,7 +87,7 @@ public class OrderDAOImpl implements OrderDAO {
             }
             if (orderFilter.getEntryDateFrom() != null && orderFilter.getEntryDateTo() != null) {
                 lp.add(cb.greaterThanOrEqualTo(r.get("recCreateTime"), orderFilter.getEntryDateFrom()));
-                lp.add(cb.lessThanOrEqualTo(r.get("recCreateTime"), orderFilter.getEntryDateTo  ()));
+                lp.add(cb.lessThanOrEqualTo(r.get("recCreateTime"), orderFilter.getEntryDateTo()));
 
             }
         }
