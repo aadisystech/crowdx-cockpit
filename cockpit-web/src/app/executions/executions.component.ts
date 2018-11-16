@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ExecutionsService } from './executions.service';
-import { PagerService } from '../utilities/pager/pager.service';
-import { LoaderService } from '../utilities/loader/loader.service';
 
 @Component({
   selector: 'app-executions',
@@ -17,7 +15,7 @@ export class ExecutionsComponent implements OnInit {
     buttons: { showClose: true }, icons: { clear: 'fa fa-trash' }
   };
 
-  constructor(private executionsService: ExecutionsService) { }
+  constructor(public executionsService: ExecutionsService) { }
 
   ngOnInit() {    
   }
