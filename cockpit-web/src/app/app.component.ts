@@ -18,11 +18,11 @@ export class AppComponent {
   onSearch() {
     if (this.idInput != undefined) {
       if (this.idInput.startsWith("O") && this.idInput.length == 14) {
-        window.open('orders/' + this.idInput);
+        window.open('#/orders/' + this.idInput);
       } else if  (this.idInput.startsWith("E") && this.idInput.length == 14) {
-        window.open('executions/' + this.idInput);
+        window.open('#/executions/' + this.idInput);
       } else {
-        alert("Please enter a valid ID");
+        alert("Please enter a valid ID"); 
       }
     }
   }
